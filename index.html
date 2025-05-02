@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Leptos Playground</title>
+        <link data-trunk rel="rust" data-wasm-opt="0" data-keep-debug=true />
+        <link rel="stylesheet" href="https://unpkg.com/open-props"/>
+
+        <!-- optional imports that use the props -->
+        <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/open-props/buttons.min.css"/>
+    
+        <style>
+            h1, h2, h3, h4, h5, h6 {
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            p {
+                margin: var(--size-2);
+            }
+
+            body > picture, button, p, progress {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+
+            body {
+                margin-bottom: 30px;
+            }
+
+            img {
+                height: 100px;
+                width: auto;
+                margin: auto;
+            }
+
+            .red {
+                color: red;
+            }
+
+            .blue-bg {
+                background-color: blue;
+            }
+
+            .rounded {
+                border-radius: 50%;
+            }
+
+            .flex {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .hor {
+                flex-direction: row;
+            }
+
+            .hor > * {
+                margin-right: 10px;
+            }
+
+            .flex > * {
+                margin-top: 10px;
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .users {
+                display: flex;
+            }
+
+            a[aria-current] {
+                text-decoration: underline;
+                color: red;
+            }
+
+            nav {
+                font-size: 30px;
+            }
+        </style>
+    </head>
+    <body>
+    </body>
+</html>

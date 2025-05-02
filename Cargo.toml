@@ -1,0 +1,13 @@
+[package]
+name = "leptos-tutorial"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+leptos = { version = "0.7.8", features = ["csr"] }
+leptos_router = { version = "0.7.8"}
+console_error_panic_hook = "0.1.7"
+reactive_stores = "0.1.8"
+gloo-timers = { version = "0.3.0", features = ["futures"] }
+async-std = "1.13.1"
+serde = { version = "1.0.219", features = ["derive"] }
