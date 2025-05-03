@@ -931,6 +931,7 @@ dependencies = [
  "leptos_router",
  "reactive_stores",
  "serde",
+ "wasm-bindgen",
 ]
 
 [[package]]

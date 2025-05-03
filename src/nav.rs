@@ -1,13 +1,56 @@
-use leptos::{logging::log, prelude::*};
+use leptos::{ html::Div, logging::log, prelude::*};
 use leptos_router::{
     components::{A, Form, Outlet, ParentRoute, Route, Router, Routes},
     hooks::{use_params_map, use_query_map},
     path,
 };
+use wasm_bindgen::prelude::*;
+
 use serde::{Deserialize, Serialize};
+
+#[wasm_bindgen]
+extern "C" {
+    #[derive(Debug)]
+    type Player;
+
+    #[wasm_bindgen(method, getter, structural)]
+    fn el(this: &Player) -> Option<String>;
+
+    #[wasm_bindgen(method)]
+    fn play(this: &Player);
+
+    #[wasm_bindgen(method)]
+    fn pause(this: &Player);
+
+    #[wasm_bindgen(method)]
+    fn resume(this: &Player);
+
+    #[wasm_bindgen(method, js_name=getSrcUrl)]
+    fn get_src_url(this: &Player, file: &str) -> String;
+
+    #[wasm_bindgen(js_namespace=flvjs, js_name = createPlayer)]
+    fn create_player() -> Player;
+
+    #[wasm_bindgen(method, js_name=attachElement)]
+    fn attach_element(this: &Player, el: JsValue) -> bool;
+}
 
 #[component]
 pub fn Nav() -> impl IntoView {
+    let pel = NodeRef::<Div>::new();
+
+    Effect::new(move || {
+        if let Some(node) = pel.get() {
+            let player = create_player();
+            log!("当前播放器挂载：{:?}", player.el());
+            player.attach_element(node.into());
+            player.play();
+            player.pause();
+            player.resume();
+            log!("rust call js and return <{}>", player.get_src_url("funny_video.mp4"));
+        }
+    });
+
     view! {
         <Router>
             <nav class="flex hor" class:demo>
@@ -16,6 +59,7 @@ pub fn Nav() -> impl IntoView {
                 <a href="/form">"form"</a>
             </nav>
             <main>
+                <div node_ref=pel id="player_container" />
                 <Routes fallback=|| "Not found.">
                     <ParentRoute path=path!("/users") view=Users>
                         <Route path=path!("") view=EmailAndPhone />
@@ -37,7 +81,7 @@ async fn fetch_search(key: String) -> Vec<Pet> {
     log!("fetch_search: {:?}", key);
     vec![
        Pet { id: 10, name: format!("<{key}> 豆子")},
-       Pet {id: 20, name: format!("<{key} ok> 王立")}
+       Pet { id: 20, name: format!("<{key} ok> 王立")}
     ]
 }
 
@@ -55,10 +99,7 @@ fn FormDemo() -> impl IntoView {
     let search_results = Resource::new(search, |key| fetch_search(key));
     
     let async_result = move || {
-        search_results
-            .get()
-            .map(|value| value)
-            .unwrap_or_default()
+        search_results.get().map_or(Default::default(), |value| value)
     };
 
     view! {

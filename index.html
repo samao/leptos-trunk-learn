@@ -90,6 +90,32 @@
                 font-size: 30px;
             }
         </style>
+        <script>
+            var flvjs = {
+                createPlayer() {
+                    console.log('创建播放器');
+
+                    return {
+                        play() {
+                            console.log('play', this.el);
+                        },
+                        pause() {
+                            console.log('pause', this.el);
+                        },
+                        resume() {
+                            console.log('resume', this.el);
+                        },
+                        getSrcUrl(file) {
+                            return "getSrcUrl:" + file;
+                        },
+                        attachElement(el) {
+                            this.el = el;
+                            console.log("attachElement", el);
+                        }
+                    }
+                }
+            }
+        </script>
     </head>
     <body>
     </body>
