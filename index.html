@@ -1,122 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Leptos Playground</title>
-        <link data-trunk rel="rust" data-wasm-opt="0" data-keep-debug=true />
-        <link rel="stylesheet" href="https://unpkg.com/open-props"/>
 
-        <!-- optional imports that use the props -->
-        <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css"/>
-        <link rel="stylesheet" href="https://unpkg.com/open-props/buttons.min.css"/>
-    
-        <style>
-            h1, h2, h3, h4, h5, h6 {
-                text-align: center;
-                white-space: nowrap;
-            }
+<head>
+    <meta charset="UTF-8">
+    <title>Leptos Playground</title>
+    <link data-trunk rel="rust" data-wasm-opt="0" data-keep-debug=true />
+    <link rel="stylesheet" href="https://unpkg.com/open-props" />
 
-            h1 {
-                font-size: 20px;
-            }
+    <!-- optional imports that use the props -->
+    <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/open-props/buttons.min.css" />
 
-            p {
-                margin: var(--size-2);
-            }
+    <style>
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            text-align: center;
+            white-space: nowrap;
+        }
 
-            body > picture, button, p, progress {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                text-align: center;
-            }
+        h1 {
+            font-size: 20px;
+        }
 
-            body {
-                margin-bottom: 30px;
-            }
+        p {
+            margin: var(--size-2);
+        }
 
-            img {
-                height: 100px;
-                width: auto;
-                margin: auto;
-            }
+        body>picture,
+        button,
+        p,
+        progress {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
 
-            .red {
-                color: red;
-            }
+        body {
+            margin-bottom: 30px;
+        }
 
-            .blue-bg {
-                background-color: blue;
-            }
+        img {
+            height: 100px;
+            width: auto;
+            margin: auto;
+        }
 
-            .rounded {
-                border-radius: 50%;
-            }
+        .red {
+            color: red;
+        }
 
-            .flex {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
+        .blue-bg {
+            background-color: blue;
+        }
 
-            .hor {
-                flex-direction: row;
-            }
+        .rounded {
+            border-radius: 50%;
+        }
 
-            .hor > * {
-                margin-right: 10px;
-            }
+        .flex {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-            .flex > * {
-                margin-top: 10px;
-            }
+        .hor {
+            flex-direction: row;
+        }
 
-            ul {
-                list-style: none;
-                padding: 0;
-            }
+        .hor>* {
+            margin-right: 10px;
+        }
 
-            .users {
-                display: flex;
-            }
+        .flex>* {
+            margin-top: 10px;
+        }
 
-            a[aria-current] {
-                text-decoration: underline;
-                color: red;
-            }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
 
-            nav {
-                font-size: 30px;
-            }
-        </style>
-        <script>
-            var flvjs = {
-                createPlayer() {
-                    console.log('创建播放器');
+        .users {
+            display: flex;
+        }
 
-                    return {
-                        play() {
-                            console.log('play', this.el);
-                        },
-                        pause() {
-                            console.log('pause', this.el);
-                        },
-                        resume() {
-                            console.log('resume', this.el);
-                        },
-                        getSrcUrl(file) {
-                            return "getSrcUrl:" + file;
-                        },
-                        attachElement(el) {
-                            this.el = el;
-                            console.log("attachElement", el);
-                        }
+        a[aria-current] {
+            text-decoration: underline;
+            color: red;
+        }
+
+        nav {
+            font-size: 30px;
+        }
+    </style>
+    <script>
+        var flvjs = {
+            createPlayer() {
+                console.log('创建播放器');
+
+                return {
+                    play() {
+                        console.log('play', this.el);
+                    },
+                    pause() {
+                        console.log('pause', this.el);
+                    },
+                    resume() {
+                        console.log('resume', this.el);
+                    },
+                    getSrcUrl(file) {
+                        return "getSrcUrl:" + file;
+                    },
+                    attachElement(el) {
+                        this.el = el;
+                        console.log("attachElement", el);
+                    },
+                    fire(cb, data) {
+                        return cb(data);
+                    },
+                    async destroy() {
+                        console.log('js destroy', this.el);
+                        await new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                resolve();
+                            }, 5000);
+                        });
+                        console.log('js destroy after promise', this.el);
+                        return true
                     }
                 }
             }
-        </script>
-    </head>
-    <body>
-    </body>
+        }
+    </script>
+</head>
+
+<body>
+</body>
+
 </html>

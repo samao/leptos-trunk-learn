@@ -932,6 +932,7 @@ dependencies = [
  "reactive_stores",
  "serde",
  "wasm-bindgen",
+ "wasm-bindgen-futures",
 ]
 
 [[package]]

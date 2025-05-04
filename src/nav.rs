@@ -1,11 +1,10 @@
-use leptos::{ html::Div, logging::log, prelude::*};
+use leptos::{ html::Div, logging::log, prelude::*, task::spawn_local};
 use leptos_router::{
     components::{A, Form, Outlet, ParentRoute, Route, Router, Routes},
     hooks::{use_params_map, use_query_map},
     path,
 };
 use wasm_bindgen::prelude::*;
-
 use serde::{Deserialize, Serialize};
 
 #[wasm_bindgen]
@@ -22,6 +21,9 @@ extern "C" {
     #[wasm_bindgen(method)]
     fn pause(this: &Player);
 
+    #[wasm_bindgen(method, js_name=fire)]
+    fn fire(this: &Player, cb: &Closure<dyn Fn(JsValue) -> JsValue>, data: JsValue) -> JsValue;
+
     #[wasm_bindgen(method)]
     fn resume(this: &Player);
 
@@ -33,6 +35,9 @@ extern "C" {
 
     #[wasm_bindgen(method, js_name=attachElement)]
     fn attach_element(this: &Player, el: JsValue) -> bool;
+
+    #[wasm_bindgen(method, js_name=destroy)]
+    async fn destroy(this: &Player) -> JsValue;
 }
 
 #[component]
@@ -42,12 +47,26 @@ pub fn Nav() -> impl IntoView {
     Effect::new(move || {
         if let Some(node) = pel.get() {
             let player = create_player();
-            log!("当前播放器挂载：{:?}", player.el());
+            log!("on player mount：{:?}", player.el());
             player.attach_element(node.into());
             player.play();
             player.pause();
             player.resume();
             log!("rust call js and return <{}>", player.get_src_url("funny_video.mp4"));
+
+            let data = player.fire(&Closure::new(|params: JsValue| {
+                log!("Js Call rust Defined callback with <{:?}>", params);
+                params
+            }), JsValue::from_str("hello world"));
+
+            log!("Rust receive Js call defined in rust code <{:?}>", data);
+
+            spawn_local(async move {
+                let a = player.destroy().await;
+                log!("player destroyed {:?}", a);
+            });
+            
+            log!("player destroyed after spawn_local");
         }
     });
 
